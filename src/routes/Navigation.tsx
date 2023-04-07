@@ -1,11 +1,17 @@
+import { Suspense } from "react";
+
 import { BrowserRouter, NavLink, Navigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { routes } from "./routes";  
 
 import logo from '../logo.svg';  
 
+
 const Navigation = () => {
   return (
+/*     <Suspense fallback={null}> */
+    <Suspense fallback={<span>Loading...</span>}>
+
     <BrowserRouter>
         <div className="main-layout">
           <nav>
@@ -38,8 +44,8 @@ const Navigation = () => {
             {
               routes.map( ({ path, component: Component }) => ( 
                 <Route key={ path } 
-                  path={ path }  
-                  element={ <Component />  }/>   
+                path={ path }  
+                element={ <Component />  }/>   
               ))
             }
             <Route path="/" element={ <h1>Home Page</h1>} />         
@@ -47,6 +53,7 @@ const Navigation = () => {
           </Routes>
         </div>
     </BrowserRouter>
+  </Suspense>
   )
 }
 
