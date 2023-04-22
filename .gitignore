@@ -22,5 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-s3-react-app-pro
-s4_lazyload_chunk_react_router_dom_v6
+/s3-react-app-pro
+/s4_lazyload_chunk_react_router_dom_v6
