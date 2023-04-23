@@ -1,10 +1,12 @@
-import { useProduct } from '../hooks/useProduct'   // llamar la funcion
+import { ReactElement } from 'react';
+import { useProduct } from '../hooks/useProduct'  
 
 import styles from '../style/styles.module.css'
 import noImage from '../assets/no-image.jpg'
 
-interface Props {           // son interfaces la de mayor jerarquia antes
-    product: Product
+interface Props { 
+    product: Product;
+    children?: ReactElement | ReactElement[]   // ReactElement soporta solo un componente y ReactElement[] mas elementos
 }
 
 interface Product {
@@ -52,21 +54,32 @@ export const ProductButtons = ({ increaseBy, counter }: ProductButtonsProps) => 
 }
 
 
-        // al desestructurar el product estamos obligando que es tiene que enviar el producto
-export const ProductCard = ({ product }: Props) => { // aqui entran las properties del padre se tiene que definir
+// si recibo hijos coloco children
+export const ProductCard = ({ children, product }: Props) => { // aqui entran las properties del padre se tiene que definir
 
     const { counter, increaseBy } = useProduct()
 
     return (
         <div className={ styles.productCard }>
 
+            { children }
+
+        {/* 
             <ProductImage img={ product.img } />
             
             <ProductTitle title={ product.title } />
             
             <ProductButtons increaseBy={ increaseBy } counter={ counter }   />
-            
+        */}
         </div>
   )
 }
+
+// aqui estamos añadiendo esta nueva propiedad  ProductCard que apunta a cada Componente
+ProductCard.Title   = ProductTitle              // aqui estamos pasando el ProductTitl 
+ProductCard.Image   = ProductImage
+ProductCard.Buttons = ProductButtons
+
+
+
 
