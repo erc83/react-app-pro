@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, createContext, useContext } from 'react';
 import { useProduct } from '../hooks/useProduct'  
 
 import styles from '../style/styles.module.css'
@@ -6,7 +6,7 @@ import noImage from '../assets/no-image.jpg'
 
 interface Props { 
     product: Product;
-    children?: ReactElement | ReactElement[]   // ReactElement soporta solo un componente y ReactElement[] mas elementos
+    children?: ReactElement | ReactElement[]   
 }
 
 interface Product {
@@ -15,27 +15,64 @@ interface Product {
     img?: string;
 }
 
-// un string '' para un ternerio lo considera como que no tiene valor
+/* Inicio Configuracion context*/
+interface ProductContextProps {
+    counter: number;
+    increaseBy: (value: number) => void; 
+    product: Product;                       
+}
 
-// export const ProductImage = ( {img }: { img: string } ) => {   obliga a que tiene que venir la img
-export const ProductImage = ( {img = ""} ) => {
+const ProductContext = createContext({} as ProductContextProps)
+const { Provider } = ProductContext;  // aqui tenemos que extraer el provider de este contexto
+/* termino Configuracion context*/
+
+export const ProductImage = ( {img = ""} ) => {  
+
+    const { product } = useContext( ProductContext )
+
+    let imgToShow: string;
+
+    if ( img ) {
+        imgToShow = img; 
+    } else if ( product.img ) {
+        imgToShow = product.img
+    } else {
+        imgToShow = noImage
+    }
+
     return (
-        <img className={ styles.productImg } src={ img ? img : noImage } alt="Coffe mug" /> 
+        <>
+            <img className={ styles.productImg } src={ imgToShow } alt="Coffe mug" /> 
+        </>
     )
 }
 
-// si viene mas de una propiedad, podemos crear una interfaz
-export const ProductTitle = ( { title }:  { title:string}  ) => {   // se abliga que tiene que venir el titulo
+
+export const ProductTitle = ( { title }:  { title?:string}  ) => {   
+    
+    const { product } = useContext( ProductContext )  
+    
+    let titleToShow: string;
+
+    if ( title ) {
+        titleToShow = title
+    } else if( product.title ) {
+        titleToShow = product.title
+    } else {
+        titleToShow = ''
+    }
+
     return (
-        <span className={ styles.productDescription }>{ title }</span>
+        <>
+            <span className={ styles.productDescription }>{ titleToShow }</span> <br/>
+            <span className={ styles.productDescription }>{ title ? title : product.title }</span>
+        </>
     )
 }
 
-interface ProductButtonsProps {
-    increaseBy: (value: number) => void,
-    counter: number
-}
-export const ProductButtons = ({ increaseBy, counter }: ProductButtonsProps) => {
+export const ProductButtons = () => {
+
+    const { increaseBy, counter} = useContext( ProductContext )
     return(
         <div className={ styles.buttonsContainer }>
                 <button 
@@ -53,30 +90,26 @@ export const ProductButtons = ({ increaseBy, counter }: ProductButtonsProps) => 
     );
 }
 
-
-// si recibo hijos coloco children
-export const ProductCard = ({ children, product }: Props) => { // aqui entran las properties del padre se tiene que definir
+export const ProductCard = ({ children, product }: Props) => { 
 
     const { counter, increaseBy } = useProduct()
 
     return (
-        <div className={ styles.productCard }>
+        <Provider value={{
+            counter,
+            increaseBy,
+            product
+        }}>
+            <div className={ styles.productCard }>
 
-            { children }
+                { children }
 
-        {/* 
-            <ProductImage img={ product.img } />
-            
-            <ProductTitle title={ product.title } />
-            
-            <ProductButtons increaseBy={ increaseBy } counter={ counter }   />
-        */}
-        </div>
+            </div>
+        </Provider>
   )
 }
 
-// aqui estamos añadiendo esta nueva propiedad  ProductCard que apunta a cada Componente
-ProductCard.Title   = ProductTitle              // aqui estamos pasando el ProductTitl 
+ProductCard.Title   = ProductTitle             
 ProductCard.Image   = ProductImage
 ProductCard.Buttons = ProductButtons
 

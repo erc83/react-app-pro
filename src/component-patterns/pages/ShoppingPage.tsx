@@ -1,4 +1,3 @@
-import { futimesSync } from "fs"
 import { 
   ProductCard,  // aqui vienen las en propiedades los componentes ProductCard.Image, ProductCard.Title, ProductCard.Buttons 
   ProductButtons,  
@@ -10,7 +9,6 @@ import {
 const product =  {      
   id: "1",
   title: 'Coffe Mug - Card',
-  title1: 'Coffe Mug - Card',        // tambien lo recibe porque necesita minimo id, title
   img: './coffee-mug.png'
 }
 
@@ -27,30 +25,16 @@ export const ShoppingPage = () => {
             flexWrap: "wrap"
           }}
         >
-          {/* <ProductCard product={ product} /> */}
           <ProductCard product={ product}>
               <ProductCard.Image />
-              <ProductCard.Title title={ '' } />
-
-              {/* di se intenta usar asi el componente se rompetodo */}
-              <ProductCard.Buttons increaseBy={function (value:number): void {
-                throw new Error("Function not implement")
-              }}
-              counter={0}
-          />    
+              <ProductCard.Title />
+              <ProductCard.Buttons />    
           </ProductCard>
-          
           
           <ProductCard product={ product}>
               <ProductImage />
-              <ProductTitle title={ '' } />
-
-              {/* di se intenta usar asi el componente se rompetodo */}
-              <ProductButtons increaseBy={function (value:number): void {
-                throw new Error("Function not implement")
-              }}
-              counter={ 0 }
-          />    
+              <ProductTitle title={ 'Cambiando el titulo' } />
+              <ProductButtons />    
           </ProductCard>
         </div>
     </div>
