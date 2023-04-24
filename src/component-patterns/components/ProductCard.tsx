@@ -1,96 +1,22 @@
-import { ReactElement, createContext, useContext } from 'react';
+import {  createContext } from 'react';
 import { useProduct } from '../hooks/useProduct'  
 
 import styles from '../style/styles.module.css'
-import noImage from '../assets/no-image.jpg'
 
-interface Props { 
-    product: Product;
-    children?: ReactElement | ReactElement[]   
-}
+import { ProductCardProps, ProductContextProps } from '../interfaces/interfaces_product';
+/* import { ProductImage } from './ProductImage';
+import { ProductButtons } from './ProductButton';
+import { ProductTitle } from './ProductTitle'; */
 
-interface Product {
-    id: string;
-    title: string;
-    img?: string;
-}
+/* import { ProductButtons, ProductTitle, ProductImage } from "./index"; */
 
-/* Inicio Configuracion context*/
-interface ProductContextProps {
-    counter: number;
-    increaseBy: (value: number) => void; 
-    product: Product;                       
-}
 
-const ProductContext = createContext({} as ProductContextProps)
-const { Provider } = ProductContext;  // aqui tenemos que extraer el provider de este contexto
+export const ProductContext = createContext({} as ProductContextProps)
+const { Provider } = ProductContext;  
 /* termino Configuracion context*/
 
-export const ProductImage = ( {img = ""} ) => {  
 
-    const { product } = useContext( ProductContext )
-
-    let imgToShow: string;
-
-    if ( img ) {
-        imgToShow = img; 
-    } else if ( product.img ) {
-        imgToShow = product.img
-    } else {
-        imgToShow = noImage
-    }
-
-    return (
-        <>
-            <img className={ styles.productImg } src={ imgToShow } alt="Coffe mug" /> 
-        </>
-    )
-}
-
-
-export const ProductTitle = ( { title }:  { title?:string}  ) => {   
-    
-    const { product } = useContext( ProductContext )  
-    
-    let titleToShow: string;
-
-    if ( title ) {
-        titleToShow = title
-    } else if( product.title ) {
-        titleToShow = product.title
-    } else {
-        titleToShow = ''
-    }
-
-    return (
-        <>
-            <span className={ styles.productDescription }>{ titleToShow }</span> <br/>
-            <span className={ styles.productDescription }>{ title ? title : product.title }</span>
-        </>
-    )
-}
-
-export const ProductButtons = () => {
-
-    const { increaseBy, counter} = useContext( ProductContext )
-    return(
-        <div className={ styles.buttonsContainer }>
-                <button 
-                    className={ styles.buttonMinus }
-                    onClick={ () => increaseBy( - 1) } 
-                > - </button>
-
-                <div className={ styles.countLabel }> { counter } </div>
-                
-                <button 
-                    className={ styles.buttonAdd }
-                    onClick={ () => increaseBy( +1 ) }
-                > + </button>
-            </div>
-    );
-}
-
-export const ProductCard = ({ children, product }: Props) => { 
+export const ProductCard = ({ children, product }: ProductCardProps) => { 
 
     const { counter, increaseBy } = useProduct()
 
@@ -109,10 +35,11 @@ export const ProductCard = ({ children, product }: Props) => {
   )
 }
 
-ProductCard.Title   = ProductTitle             
+/*   Sin uso aun
+ProductCard.Title   = ProductTitle           
 ProductCard.Image   = ProductImage
 ProductCard.Buttons = ProductButtons
-
+*/
 
 
 

@@ -1,9 +1,9 @@
 import { 
-  ProductCard,  // aqui vienen las en propiedades los componentes ProductCard.Image, ProductCard.Title, ProductCard.Buttons 
+  ProductCard,  // Ya no vienen las propiedades por ahora se comenta la card con las propiedades dentro
   ProductButtons,  
   ProductImage, 
-  ProductTitle  
-} from "../components/ProductCard"
+  ProductTitle 
+} from "../components"
 
 // si esta vacio el {} product, typescript necesita que se envie las propiedades id, title
 const product =  {      
@@ -11,7 +11,6 @@ const product =  {
   title: 'Coffe Mug - Card',
   img: './coffee-mug.png'
 }
-
 
 export const ShoppingPage = () => {
   return (
@@ -25,17 +24,18 @@ export const ShoppingPage = () => {
             flexWrap: "wrap"
           }}
         >
-          <ProductCard product={ product}>
+          {/* <ProductCard product={ product}>
               <ProductCard.Image />
               <ProductCard.Title />
               <ProductCard.Buttons />    
-          </ProductCard>
+          </ProductCard> */}
           
-          <ProductCard product={ product}>
+          <ProductCard product={ product}>    
               <ProductImage />
-              <ProductTitle title={ 'Cambiando el titulo' } />
+             {/*  <ProductTitle title={ 'Cambiando el titulo' } /> */}
+              <ProductTitle />
               <ProductButtons />    
-          </ProductCard>
+          </ProductCard> 
         </div>
     </div>
   )
